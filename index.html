@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw × 小红书运营作战地图（完整版）</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#7c3aed',
+        primaryTextColor: '#e5e7eb',
+        primaryBorderColor: '#a78bfa',
+        lineColor: '#94a3b8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#0b1220',
+        background: '#0b1220'
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🦞</div>
+      <div>
+        <h1>OpenClaw × 小红书运营作战地图（完整版）</h1>
+        <p>关键词库 + 策略SOP + Skill沉淀，一页统管增长执行系统</p>
+      </div>
+    </div>
+    <div class="version">V3 · Full Stack Ops</div>
+  </header>
+
+  <main class="container">
+    <section class="kpis">
+      <article><span>主线赛道</span><strong>OpenClaw 实用教程</strong></article>
+      <article><span>内容定位</span><strong>可执行 / 可复用 / 可沉淀</strong></article>
+      <article><span>运营引擎</span><strong>采样 → 草稿 → 发布 → 复盘</strong></article>
+    </section>
+
+    <section class="panel">
+      <h2>01｜战略目标与内容架构</h2>
+      <div class="columns-2">
+        <div class="card">
+          <h3>北极星目标</h3>
+          <ul>
+            <li>建立“OpenClaw实战教程”第一心智，提升精准流量稳定性。</li>
+            <li>将内容生产从单篇创作升级为模板化流水线。</li>
+            <li>所有动作可复盘、可迭代、可沉淀到 skill 资产。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>内容模块矩阵（优先级）</h3>
+          <div class="tags">
+            <span>P0 安装保姆级</span><span>P0 小白入门</span><span>P0 飞书接入</span>
+            <span>P1 自动化流程</span><span>P1 避坑清单</span><span>P1 7天训练营</span>
+            <span>P2 模板库</span><span>P2 案例复盘</span><span>P2 对比评测</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>02｜运营总流程（Mermaid）</h2>
+      <div class="card flow">
+<pre class="mermaid">flowchart LR
+A[关键词扩样] --> B[图文采样]
+B --> C[结构提取]
+C --> D[生成草稿]
+D --> E[自动存草稿]
+E --> F[排期发布]
+F --> G[数据复盘]
+G --> H[更新模板与Skill]
+H --> A</pre>
+      </div>
+      <div class="card flow">
+<pre class="mermaid">sequenceDiagram
+participant U as 运营者
+participant C as OpenClaw
+participant P as 小红书创作后台
+participant K as 内容资产库
+U->>C: 下达目标（如：本周3篇）
+C->>K: 调用关键词库与文案模板
+C->>P: 自动填充标题/正文/标签并保存草稿
+C-->>U: 回传草稿状态与发布时间建议
+U->>P: 审核并发布
+P-->>C: 返回互动数据
+C->>K: 更新复盘结论与下轮策略</pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>03｜关键词库（全面版）</h2>
+      <div class="card">
+        <h3>3.1 核心词（品牌+入口）</h3>
+        <p class="muted">用于账号主心智与基础流量承接</p>
+        <div class="tags big">
+          <span>openclaw 教程</span><span>openclaw 安装</span><span>openclaw 安装教程</span><span>openclaw 入门</span><span>openclaw 小白教程</span><span>openclaw 保姆级</span>
+          <span>openclaw 使用</span><span>openclaw 实战</span><span>openclaw workflow</span><span>openclaw skills</span><span>openclaw 记忆</span><span>openclaw 提示词</span>
+        </div>
+      </div>
+
+      <div class="columns-2">
+        <div class="card">
+          <h3>3.2 场景词（结果导向）</h3>
+          <ul>
+            <li>日报自动化 / 周报自动化 / 会议纪要自动整理</li>
+            <li>飞书群助手 / 群聊机器人 / 自动提醒 / 待办汇总</li>
+            <li>内容选题自动化 / 标题生成 / 知识库问答</li>
+            <li>个人AI助理 / 团队AI同事 / 工作流助手</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>3.3 平台接入词（转化导向）</h3>
+          <ul>
+            <li>openclaw 接入飞书 / 飞书机器人 / 飞书自动化</li>
+            <li>openclaw 接入微信 / 企业微信 / 微信群机器人</li>
+            <li>openclaw 接入钉钉 / discord / 多端消息聚合</li>
+            <li>openclaw mcp / openclaw n8n / openclaw codex</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="columns-2">
+        <div class="card">
+          <h3>3.4 痛点词（高评论率）</h3>
+          <ul>
+            <li>不会装 / 安装报错 / 端口冲突 / 依赖缺失</li>
+            <li>能跑但不好用 / 提示词失效 / 输出不稳定</li>
+            <li>不知道从哪开始 / 新手第一步 / 怎么落地</li>
+            <li>只会聊天不干活 / 自动化流程搭不起来</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>3.5 竞品与邻近词（扩量）</h3>
+          <ul>
+            <li>claude code 教程 / codex 实战 / agent 工作流</li>
+            <li>本地AI助手 / 开源AI助手 / MCP工具链</li>
+            <li>AI办公自动化 / AI效率工具 / 私有部署助手</li>
+            <li>clawdbot 教程 / clawcloud openclaw</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>3.6 关键词组合公式（直接用于采样）</h3>
+        <ul>
+          <li><code>核心词 + 教程/入门/保姆级</code>（拉新）</li>
+          <li><code>核心词 + 接入平台词</code>（转化）</li>
+          <li><code>核心词 + 场景词 + 结果词</code>（收藏）</li>
+          <li><code>痛点词 + 解决词（避坑/修复/清单）</code>（评论）</li>
+          <li><code>竞品词 + 对比词（哪个好/怎么选）</code>（扩圈）</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>04｜策略SOP（详细执行版）</h2>
+      <div class="card">
+        <h3>Step 1：周度选题规划（周六）</h3>
+        <ul>
+          <li>从关键词库选 12 个词：P0 6个、P1 4个、P2 2个。</li>
+          <li>每个词采样前 20-30 条，记录标题、互动量、发布时间、结构。</li>
+          <li>输出：本周 7 条候选选题 + 3 条主推选题。</li>
+        </ul>
+
+        <h3>Step 2：文案生产（周日）</h3>
+        <ul>
+          <li>每条内容必须包含：标题A/B、开头A/B、正文骨架、首评引导。</li>
+          <li>正文结构统一为：问题场景 → 操作步骤 → 结果反馈 → CTA。</li>
+          <li>避免纯概念阐述，优先“操作动作 + 可验证结果”。</li>
+        </ul>
+
+        <h3>Step 3：草稿自动化入库（周日-周一）</h3>
+        <ul>
+          <li>调用浏览器自动化 skill，填充标题/正文/标签并保存草稿。</li>
+          <li>草稿命名规范：<code>主题_目标_日期</code>。</li>
+          <li>发布前校验：标题完整、正文字数、标签数量、首评是否准备。</li>
+        </ul>
+
+        <h3>Step 4：发布与复盘（发布后24小时）</h3>
+        <ul>
+          <li>采集指标：点击率、收藏率、评论率、完读率（若可得）。</li>
+          <li>判定：高于均值为“保留模板”；低于均值进入“改写池”。</li>
+          <li>复盘产物：<code>高表现标题库</code>、<code>低表现原因库</code>、<code>下周优化动作</code>。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>05｜Skill沉淀体系（当前 + 下一步）</h2>
+      <div class="card">
+        <h3>已沉淀 Skill</h3>
+        <ul>
+          <li><strong>xiaohongshu-browser-control</strong>：用于打开创作页、填充标题正文标签、保存草稿、发布前校验。</li>
+          <li>支持模式：<code>draft</code> / <code>publish</code> / <code>fill-only</code></li>
+          <li>输入建议：<code>title</code>、<code>body</code>、<code>tags[]</code>、<code>assets[]</code></li>
+          <li>固定校验：标题非空、正文长度、标签数量、素材加载、按钮可点击。</li>
+        </ul>
+      </div>
+
+      <div class="columns-2">
+        <div class="card">
+          <h3>建议新增 Skill（按优先级）</h3>
+          <ul>
+            <li><strong>xhs-keyword-research</strong>：关键词扩样 + 热词分桶 + 竞争度评分</li>
+            <li><strong>xhs-title-lab</strong>：标题A/B自动生成与评分</li>
+            <li><strong>xhs-content-composer</strong>：正文骨架自动成稿</li>
+            <li><strong>xhs-posting-planner</strong>：发布时间与连发策略建议</li>
+            <li><strong>xhs-review-loop</strong>：发布后数据回收与模板回写</li>
+          </ul>
+        </div>
+        <div class="card flow">
+<pre class="mermaid">flowchart TD
+S1[xiaohongshu-browser-control] --> S2[xhs-keyword-research]
+S2 --> S3[xhs-title-lab]
+S3 --> S4[xhs-content-composer]
+S4 --> S1
+S1 --> S5[xhs-review-loop]
+S5 --> S2</pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Skill标准接口（建议）</h3>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th><th>示例</th></tr></thead>
+          <tbody>
+            <tr><td>mode</td><td>执行模式</td><td>draft / publish / fill-only</td></tr>
+            <tr><td>title</td><td>帖子标题</td><td>OpenClaw 安装保姆级...</td></tr>
+            <tr><td>body</td><td>正文内容</td><td>问题→步骤→结果→CTA</td></tr>
+            <tr><td>tags</td><td>标签数组</td><td>[#OpenClaw,#AI效率]</td></tr>
+            <tr><td>assets</td><td>素材路径</td><td>['./images/1.png']</td></tr>
+            <tr><td>result</td><td>执行结果</td><td>success / failed + reason</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>06｜文章内容构建方案（独立模块）</h2>
+      <div class="columns-2">
+        <div class="card">
+          <h3>6.1 爆款文章结构（标准模板）</h3>
+          <ul>
+            <li><strong>开头钩子（2-3句）</strong>：结果承诺/痛点共鸣/反常识切入三选一。</li>
+            <li><strong>场景问题</strong>：明确“谁在什么情况下卡住了什么问题”。</li>
+            <li><strong>操作步骤</strong>：3-7步，动作化表达（每步一个可执行动作）。</li>
+            <li><strong>结果反馈</strong>：给出可验证结果（节省时间、跑通流程、实际效果）。</li>
+            <li><strong>收尾CTA</strong>：评论关键词领取模板/清单/下一篇延伸内容。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>6.2 不同目标的内容写法</h3>
+          <ul>
+            <li><strong>拉新型</strong>：标题强调“入门/保姆级/最短路径”，正文偏教程拆解。</li>
+            <li><strong>转粉型</strong>：标题强调“体系化/连续成长”，正文加入阶段路线图。</li>
+            <li><strong>转化型</strong>：标题强调“实战结果”，正文突出案例前后对比。</li>
+            <li><strong>互动型</strong>：标题强调“避坑/对比/清单”，正文设置评论投票问题。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>6.3 标题与正文联动公式</h3>
+        <ul>
+          <li><code>标题结果词</code> 必须在正文前 120 字内再次出现，增强一致性。</li>
+          <li><code>标题承诺</code> 必须对应 <code>步骤段</code>，避免“标题党”。</li>
+          <li><code>首评引导词</code> 必须与正文结尾资源一致（如：安装清单/日报模板）。</li>
+          <li>每篇保留 1 个可复用段落，沉淀进“正文骨架模板库”。</li>
+        </ul>
+      </div>
+
+      <div class="card flow">
+<pre class="mermaid">flowchart TD
+T1[选题确定] --> T2[标题A/B生成]
+T2 --> T3[开头钩子A/B]
+T3 --> T4[正文骨架填充]
+T4 --> T5[案例与结果补强]
+T5 --> T6[结尾CTA与首评]
+T6 --> T7[草稿入库]
+T7 --> T8[发布后复盘并回写模板库]</pre>
+      </div>
+
+      <div class="card">
+        <h3>6.4 内容质检清单（发布前）</h3>
+        <table>
+          <thead><tr><th>检查项</th><th>标准</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>标题有效性</td><td>包含明确结果或明确痛点</td><td>□</td></tr>
+            <tr><td>开头强度</td><td>前2句能触发继续阅读</td><td>□</td></tr>
+            <tr><td>步骤可执行</td><td>至少3步且动作清晰</td><td>□</td></tr>
+            <tr><td>结果可验证</td><td>有数据/时间/前后对比</td><td>□</td></tr>
+            <tr><td>CTA完整</td><td>评论引导词+下一篇承接</td><td>□</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>07｜未来一周执行表（每日具体动作）</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>日期</th><th>我每天要做的具体事情</th><th>当日交付物</th><th>验收标准（你可直接评分）</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>周一</td>
+              <td>完成本周关键词扩样（主词/场景词/争议词），补充图文样本并做首轮结构标注（钩子/步骤/结果/CTA）。</td>
+              <td>《新增样本清单》+《关键词优先级表》</td>
+              <td>新增有效样本 ≥ 40；关键词分层明确（P0/P1/P2）。</td>
+            </tr>
+            <tr>
+              <td>周二</td>
+              <td>基于周一样本输出当周选题池，按“拉新/收藏/评论/转化/信任”分组，确定 7 条发布题目。</td>
+              <td>《7条发布选题单》+《标题A/B草案》</td>
+              <td>每条选题都有目标类型；每题至少2个标题版本。</td>
+            </tr>
+            <tr>
+              <td>周三</td>
+              <td>完成前 2 条图文正文成稿（按固定骨架：问题→步骤→结果→CTA），并产出首评引导话术。</td>
+              <td>2篇可发布正文 + 首评文案</td>
+              <td>每篇不少于3个可执行步骤；至少1个可量化结果表达。</td>
+            </tr>
+            <tr>
+              <td>周四</td>
+              <td>使用 xiaohongshu-browser-control 流程完成草稿填充与发布前质检（标题、正文、标签、素材、按钮状态）。</td>
+              <td>《草稿状态回执》+《发布前质检单》</td>
+              <td>草稿成功入库率 100%；质检项无漏检。</td>
+            </tr>
+            <tr>
+              <td>周五</td>
+              <td>执行 1-2 条发布，并在发布后 90 分钟收集首轮数据，标记高潜表达与低效表达。</td>
+              <td>《90分钟首轮数据记录》</td>
+              <td>完成点击/收藏/评论基础记录；给出至少3条改写建议。</td>
+            </tr>
+            <tr>
+              <td>周六</td>
+              <td>做周复盘：汇总本周内容表现，沉淀高表现标题与低表现原因，更新模板库和话题池。</td>
+              <td>《周复盘报告》+《模板更新记录》</td>
+              <td>明确“保留/淘汰/改写”三类清单；下周优化动作可执行。</td>
+            </tr>
+            <tr>
+              <td>周日</td>
+              <td>规划下周排期并完成下周前2条内容预生产（标题、正文、首评、标签），保证下周一可直接发布。</td>
+              <td>《下周排期表》+ 2条预备稿</td>
+              <td>下周计划完整；至少2条内容达到“可一键填充发布”状态。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    使用方式：直接打开 <code>xhs-ops-dashboard/index.html</code>。本页可作为长期运营总控台持续迭代。
+  </footer>
+</body>
+</html>
