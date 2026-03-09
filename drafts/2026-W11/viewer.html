@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Draft Viewer</title>
+  <link rel="stylesheet" href="../../assets/style.css" />
+  <style>
+    .article-wrap{max-width:900px;margin:0 auto}
+    .article{line-height:1.9;color:#dbe5f3}
+    .article h1,.article h2,.article h3{line-height:1.4;margin-top:1.2em;color:#f1f5f9}
+    .article p{margin:.9em 0}
+    .article ul,.article ol{padding-left:1.4em}
+    .article blockquote{margin:1em 0;padding:.8em 1em;border-left:3px solid #8b5cf6;background:rgba(139,92,246,.08);border-radius:8px}
+    .article code{font-size:.92em}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(15,23,42,.8);color:#e2e8f0;text-decoration:none}
+    .btn:hover{border-color:#8b5cf6}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🧾</div>
+      <div>
+        <h1 id="title">草稿阅读</h1>
+        <p id="subtitle">Markdown 美观阅读模式</p>
+      </div>
+    </div>
+    <div class="version">Viewer</div>
+  </header>
+
+  <main class="container article-wrap">
+    <section class="panel">
+      <div class="card toolbar">
+        <a class="btn" href="./index.html">← 返回本周导航</a>
+        <a class="btn" href="../../index.html">返回运营总控台</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="card article" id="content">加载中...</div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const file = params.get('file');
+    const content = document.getElementById('content');
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+
+    async function load() {
+      if (!file) {
+        content.innerHTML = '<p>未指定文件。请从导航页进入。</p>';
+        return;
+      }
+      try {
+        const res = await fetch(`./${file}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const md = await res.text();
+        title.textContent = decodeURIComponent(file).replace('.md','');
+        subtitle.textContent = file;
+        content.innerHTML = marked.parse(md);
+      } catch (e) {
+        content.innerHTML = `<p>加载失败：${e.message}</p>`;
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
