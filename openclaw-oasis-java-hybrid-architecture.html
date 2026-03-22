@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw × OASIS Java+Python 混合架构方案（汇报版）</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#7c3aed',
+        primaryTextColor: '#e5e7eb',
+        primaryBorderColor: '#a78bfa',
+        lineColor: '#94a3b8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#0b1220',
+        background: '#0b1220'
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🏗️</div>
+      <div>
+        <h1>OpenClaw × OASIS Java+Python 混合架构方案</h1>
+        <p>面向老板汇报：可落地、可迁移、可扩展的工程化技术路线</p>
+      </div>
+    </div>
+    <div class="version">V1 · Architecture Review</div>
+  </header>
+
+  <div class="container" style="margin-top: 8px;">
+    <section class="panel">
+      <div class="card">
+        <strong>快速导航：</strong>
+        <a href="./index.html">运营总控台</a> ·
+        <a href="./openclaw-oasis-java-hybrid-architecture.html">本页（Java+Python混合架构）</a> ·
+        <a href="./drafts/2026-W11/index.html">草稿中心（本周7天）</a>
+      </div>
+    </section>
+  </div>
+
+  <main class="container">
+    <section class="kpis">
+      <article><span>目标架构</span><strong>Java 控制面 + Python 仿真面</strong></article>
+      <article><span>核心价值</span><strong>稳迁移、低风险、保留 OASIS 资产</strong></article>
+      <article><span>适配场景</span><strong>电商多 Agent 仿真与策略评估</strong></article>
+    </section>
+
+    <section class="panel">
+      <h2>01｜执行摘要（给老板的 60 秒版本）</h2>
+      <div class="card">
+        <ul>
+          <li>现状：仿真内核高度依赖 Python OASIS 库（Agent Graph + Env + Action 执行 + DB 写入）。</li>
+          <li>结论：后端可迁 Java，但仿真内核不建议一次性重写；应采用 <strong>Java+Python 混合架构</strong>。</li>
+          <li>方案：Java 接管 API、任务编排、权限、可观测与报表；Python 保留 OASIS Runtime，作为仿真 Worker。</li>
+          <li>收益：上线风险可控、迁移周期短、可逐步演进到更强电商仿真能力。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>02｜总体架构图（目标态）</h2>
+      <div class="card flow">
+<pre class="mermaid">flowchart LR
+U[前端 Console\nWeb/运营后台] --> G[Java Gateway\nSpring Boot API]
+G --> O1[Orchestrator\n任务编排]
+G --> O2[Project/Config Service\n项目与配置]
+G --> O3[Report Service\n报告与洞察]
+
+O1 --> MQ[(Redis Stream / Kafka)]
+MQ --> PW[Python Simulation Worker\nOASIS Runtime]
+
+PW --> DB1[(simulation.db\nTwitter/Reddit)]
+PW --> LOG[(actions.jsonl / run_state)]
+PW --> IPC[IPC/gRPC Callback]
+
+G --> DB2[(PostgreSQL\n业务主库)]
+G --> RD[(Redis\n缓存/状态)]
+G --> OBS[Observability\nPrometheus+Grafana+Loki]
+
+O2 --> ZEP[Zep Graph Memory]
+O3 --> ZEP
+PW --> LLM[LLM Provider\nOpenAI-compatible]
+O3 --> LLM</pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>03｜核心流程（一次完整仿真）</h2>
+      <div class="card flow">
+<pre class="mermaid">sequenceDiagram
+participant FE as 前端
+participant JAVA as Java API
+participant MQ as 任务队列
+participant PY as Python Worker
+participant OASIS as OASIS Env
+participant DB as simulation.db
+participant REP as Report Service
+
+FE->>JAVA: 创建仿真任务(项目ID+策略参数)
+JAVA->>MQ: 投递 SimulationJob
+MQ->>PY: 拉取任务并启动仿真进程
+PY->>OASIS: 载入 Profile + Config + Actions
+loop 每一轮 Round
+  OASIS->>OASIS: LLMAction 决策 + env.step()
+  OASIS->>DB: 写入 trace/post/comment
+  PY->>JAVA: 上报 run_state/actions 增量
+end
+PY-->>JAVA: 仿真完成回调
+JAVA->>REP: 触发报告生成
+REP-->>FE: 返回报告与可视化结果</pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>04｜模块职责划分（边界清晰）</h2>
+      <div class="columns-2">
+        <div class="card">
+          <h3>Java 侧（控制面）</h3>
+          <ul>
+            <li>统一 API 网关、鉴权、租户与权限控制</li>
+            <li>项目/任务/配置/版本管理（Config Registry）</li>
+            <li>仿真任务编排、重试、幂等、审计</li>
+            <li>状态聚合：run_status、timeline、agent_stats</li>
+            <li>报告服务：策略复盘、指标汇总、管理看板</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Python 侧（仿真面）</h3>
+          <ul>
+            <li>OASIS Runtime 执行（Agent Graph + Env + step）</li>
+            <li>每轮动作落库与动作日志输出</li>
+            <li>Interview / Batch Interview 交互能力</li>
+            <li>上下文注入（Profile + Memory + Event）</li>
+            <li>仿真结果回调（状态、日志、错误）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>05｜电商场景下的上下文管理方案</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>层级</th><th>内容</th><th>更新频率</th><th>落地位置</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Identity</td><td>预算/偏好/价格敏感度/品牌忠诚</td><td>低</td><td>Profile Store（Java管理，Python加载）</td></tr>
+            <tr><td>State</td><td>购物车、待支付、可支配预算、需求强度</td><td>中</td><td>simulation.db + 状态缓存</td></tr>
+            <tr><td>Session Memory</td><td>最近曝光/互动/被种草记录</td><td>高</td><td>Worker 内存 + 滑窗摘要</td></tr>
+            <tr><td>Knowledge</td><td>商品知识、促销规则、售后政策</td><td>按需检索</td><td>Zep/检索层（Top-K注入）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>06｜技术选型建议（生产可用）</h2>
+      <div class="columns-2">
+        <div class="card">
+          <h3>后端与中间件</h3>
+          <ul>
+            <li>Java: Spring Boot 3 + Spring Security + Spring Data JPA</li>
+            <li>任务队列: Redis Stream（轻量）或 Kafka（高吞吐）</li>
+            <li>数据库: PostgreSQL（主数据）+ Redis（热状态）</li>
+            <li>对象存储: MinIO / S3（报告与归档）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>可观测与稳定性</h3>
+          <ul>
+            <li>指标: Prometheus + Grafana（任务成功率/时延）</li>
+            <li>日志: Loki/ELK（按 simulation_id 聚合）</li>
+            <li>链路追踪: OpenTelemetry</li>
+            <li>容错: 幂等键、重试策略、死信队列、熔断降级</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>07｜迁移路线图（分阶段，不停机）</h2>
+      <div class="card flow">
+<pre class="mermaid">flowchart TD
+P0[阶段0: 现状基线\n梳理接口/数据模型/运行指标] --> P1[阶段1: Java接管控制面\nAPI+任务编排+状态聚合]
+P1 --> P2[阶段2: Python Worker 服务化\nHTTP/gRPC 回调替代文件IPC]
+P2 --> P3[阶段3: 电商动作与上下文升级\n曝光-点击-加购-下单]
+P3 --> P4[阶段4: 报告体系与A/B平台化\n策略对比与ROI分析]</pre>
+      </div>
+      <div class="card">
+        <h3>阶段性交付建议</h3>
+        <ul>
+          <li><strong>T+2周</strong>：Java API + 任务编排打通，Python 维持现有仿真执行。</li>
+          <li><strong>T+4周</strong>：统一状态回传协议（run_state/actions/timeline）。</li>
+          <li><strong>T+6周</strong>：电商动作空间上线，支持漏斗指标。</li>
+          <li><strong>T+8周</strong>：管理层汇报看板稳定上线（策略效果可视化）。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>08｜关键风险与治理策略</h2>
+      <div class="card">
+        <table>
+          <thead><tr><th>风险</th><th>表现</th><th>治理策略</th></tr></thead>
+          <tbody>
+            <tr><td>跨语言链路复杂</td><td>状态不一致、回调丢失</td><td>统一 job_id/simulation_id，回调幂等，失败补偿</td></tr>
+            <tr><td>LLM不稳定</td><td>动作质量波动、输出JSON异常</td><td>结构化约束、重试、温度分层、回退策略</td></tr>
+            <tr><td>仿真成本升高</td><td>并发高时成本不可控</td><td>分层模型（核心Agent高配，长尾低配）</td></tr>
+            <tr><td>迁移影响业务</td><td>功能回归风险</td><td>灰度发布 + 双跑校验 + 指标门禁</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>09｜汇报结论（可直接念）</h2>
+      <div class="card">
+        <ul>
+          <li>我们采用 <strong>Java 控制面 + Python 仿真面</strong>，是当前成本/风险/速度最优解。</li>
+          <li>该方案既保留 OASIS 成熟能力，又满足企业级后端治理要求。</li>
+          <li>在电商方向，可快速扩展为“交易漏斗仿真引擎”，支持策略实验与ROI决策。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    交付说明：本页面为老板汇报版工程架构文档，支持长期迭代为技术蓝图主文档。
+  </footer>
+</body>
+</html>
